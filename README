@@ -1,0 +1,20 @@
+This is Zombies, v1.0
+
+Zombies is a simple curses-based game in the same style as robots.
+See the man page for details on how to play.
+
+To build and install zombies, check out the top of the Makefile
+and then:
+
+	make
+	make install
+
+It has been tested on:
+
+	NetBSD 1.4
+	Solaris 2.6
+	Ultrix 4.5
+
+Enjoy,
+
+Simon Burge <simonb@thistledown.com.au>
