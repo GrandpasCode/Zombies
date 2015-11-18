@@ -39,7 +39,7 @@ SIG		= -DSIGTYPE=void
 # ---- LIBRARIES ----
 
 # Older BSDs need -ltermcap
-LIBS		= -lcurses -ltermcap
+LIBS		= -lcurses
 # Newer BSDs and SysV use just curses
 #LIBS		= -lcurses
 # ncurses need -DUSE_NCURSES as well

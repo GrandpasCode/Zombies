@@ -209,24 +209,7 @@ init_field(void)
 SIGTYPE
 quit(int ignored)
 {
-#ifndef	_putchar
-	extern	int _putchar();
-#endif
-	extern	char *CE;
-
-	mvcur(0, COLS - 1, LINES - 1, 0);
-#ifndef SYSV
-	if (CE) {	/* try to clear to end of line */
-		_puts(CE);
-		endwin();
-	}
-	else {		/* otherwise move done a line */
-#endif
-		endwin();
-		putchar('\n');
-#ifndef SYSV
-	}
-#endif
+	endwin();
 	exit(0);
 	/* NOTREACHED */
 }
