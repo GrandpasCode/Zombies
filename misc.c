@@ -28,6 +28,7 @@
 
 #include <curses.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "zombies.h"
 
@@ -43,9 +44,9 @@ flush_in(void)
 {
 # ifdef TIOCFLUSH
 	ioctl(fileno(stdin), TIOCFLUSH, NULL);
-# else TIOCFLUSH
+# else /* TIOCFLUSH */
 	crmode();
-# endif TIOCFLUSH
+# endif /* TIOCFLUSH */
 }
 
 

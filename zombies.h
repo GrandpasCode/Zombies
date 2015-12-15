@@ -94,7 +94,6 @@
 #define	min(a, b)		((a) < (b) ? (a) : (b))
 
 #define	MVAddCh(y, x, ch)	(mvaddch(y, x, ch), Field[y][x] = ch)
-#define BEEP()			{write(2, "\007", 1); fflush(stderr);}
 
 /*
  * type definitions

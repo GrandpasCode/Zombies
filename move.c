@@ -101,7 +101,7 @@ get_move(void)
 			wrefresh(curscr);
 			break;
 		  default:
-			BEEP();
+			beep();
 			fflush(stdout);
 			break;
 		}
@@ -122,7 +122,7 @@ do_move(int dy, int dx)
 	newpos.x = Mypos.x + dx;
 	if (newpos.y <= 0 || newpos.y >= Y_FIELDSIZE ||
 	    newpos.x <= 0 || newpos.x >= X_FIELDSIZE) {
-		BEEP();
+		beep();
 		return FALSE;
 	}
 	else if (dy == 0 && dx == 0)
@@ -136,7 +136,7 @@ do_move(int dy, int dx)
 			return TRUE;
 			break;
 		case WALL:
-			BEEP();
+			beep();
 			return FALSE;
 			break;
 		case ZOMBIE:

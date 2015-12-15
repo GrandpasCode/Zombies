@@ -27,6 +27,7 @@
  */
 
 #include <curses.h>
+#include <stdlib.h>
 
 #include "zombies.h"
 
