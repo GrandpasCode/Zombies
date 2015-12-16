@@ -27,6 +27,7 @@
  */
 
 #include <curses.h>
+#include <getopt.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,6 +35,8 @@
 #include <unistd.h>
 
 #include "zombies.h"
+
+extern int optind;
 
 /* ----- global variables ----- */
 
@@ -209,6 +212,7 @@ init_field(void)
 SIGTYPE
 quit(int ignored)
 {
+	(void) ignored;
 	endwin();
 	exit(0);
 	/* NOTREACHED */

@@ -19,9 +19,9 @@ SCOREMODE	= 664
 
 CC		?= gcc
 CFLAGS		?= -O2
-CFLAGS		+= -Wall -Wextra
+CFLAGS		+= -std=c99 -Wall -Wextra
 CFLAGS		+= $(shell ncurses5-config --cflags)
-CPPFLAGS	+= -DSCORE_FILE='"$(SCOREFILE)"'
+CPPFLAGS	+= -D_POSIX_C_SOURCE=200112L -DSCORE_FILE='"$(SCOREFILE)"'
 LDLIBS		+= $(shell ncurses5-config --libs)
 
 # ---- INSTALLATION PROGRAMS ----
