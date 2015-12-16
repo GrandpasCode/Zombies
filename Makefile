@@ -4,9 +4,9 @@
 # ---- FILE LOCATIONS ----
 
 PREFIX		= /usr/local
-BINDIR		= ${PREFIX}/bin
-MANDIR		= ${PREFIX}/man/man6
-SCOREFILE	= /var/games/zombies_score
+BINDIR		= $(PREFIX)/bin
+MANDIR		= $(PREFIX)/man/man6
+SCOREFILE	= $(PREFIX)/var/games/zombies_score
 BINOWN		= games
 BINGRP		= games
 BINMODE		= 2555
@@ -17,72 +17,46 @@ SCOREMODE	= 664
 
 # ---- COMPILER OPTIONS ----
 
-# Use gcc
-CC		= gcc
-# Use cc
-#CC		= cc
-
-# For gcc with all sorts of checks
-FLAGS		= -O2 -Wall -Wstrict-prototypes -Wmissing-prototypes \
-		  -Wpointer-arith -Wreturn-type -Wcomment -Waggregate-return \
-		  -Wunused -Wbad-function-cast -Wcast-align -Wcast-qual \
-		  -Wchar-subscripts -Winline -Wmissing-declarations \
-		  -Wpointer-arith -Wshadow
-# For almost everything else
-#FLAGS		= -O2
-
-# 'Most everything uses void signal handlers
-SIG		= -DSIGTYPE=void
-# And some ancient systems don't.
-#SIG		= -DSIGTYPE=int
-
-# ---- LIBRARIES ----
-
-# Older BSDs need -ltermcap
-LIBS		= -lcurses
-# Newer BSDs and SysV use just curses
-#LIBS		= -lcurses
-# ncurses need -DUSE_NCURSES as well
-#LIBS		= -lncurses
-#DEFS		= -DUSE_NCURSES
+CC		?= gcc
+CFLAGS		?= -O2
+CFLAGS		+= -Wall -Wextra
+CFLAGS		+= $(shell ncurses5-config --cflags)
+CPPFLAGS	+= -DSCORE_FILE='"$(SCOREFILE)"'
+LDLIBS		+= $(shell ncurses5-config --libs)
 
 # ---- INSTALLATION PROGRAMS ----
 
-# BSDish
-INSTALL_PROG	= install -c -s -o ${BINOWN} -g ${BINGRP} -m ${BINMODE}
-INSTALL_MAN	= install -c -o ${MANOWN} -g ${MANGRP} -m ${MANMODE}
-INSTALL_SCORE	= install -c -o ${BINOWN} -g ${BINGRP} -m ${SCOREMODE}
-
-# SysVish
-#INSTALL_PROG	= install -u ${BINOWN} -g ${BINGRP} -m ${BINMODE}
-#INSTALL_MAN	= install -u ${MANOWN} -g ${MANGRP} -m ${MANMODE}
-#INSTALL_SCORE	= install -u ${BINOWN} -g ${BINGRP} -m ${SCOREMODE}
+INSTALL_PROG	= install -c -s -o $(BINOWN) -g $(BINGRP) -m $(BINMODE)
+INSTALL_MAN	= install -c -o $(MANOWN) -g $(MANGRP) -m $(MANMODE)
+INSTALL_SCORE	= install -c -o $(BINOWN) -g $(BINGRP) -m $(SCOREMODE)
 
 # You shouldn't need to change anything beyond here...
 
 PROG		= zombies
-SRCS		= level.c main.c misc.c move.c score.c
+SRCS		= $(wildcard *.c)
 HDRS		= zombies.h
 MAN		= zombies.6
-OBJS		= ${SRCS:.c=.o}
-CFLAGS		= $(FLAGS) $(DEFS) -DSCORE_FILE=\"${SCOREFILE}\"
+OBJS		= $(SRCS:.c=.o)
 
 all:		$(PROG)
+.PHONY: all
 
-zombies:	${OBJS}
-		${CC} -o $@ ${OBJS} ${LIBS}
+$(PROG):	$(OBJS)
 
-${OBJS}:	${HDRS}
+%.o:		%.c $(HDRS)
 
-install:	${PROG}
-		${INSTALL_PROG} ${PROG} ${BINDIR}
-		${INSTALL_MAN} ${MAN} ${MANDIR}
-		if [ ! -f ${SCOREFILE} ]; then \
-			${INSTALL_SCORE} /dev/null ${SCOREFILE} ; \
+install:	$(PROG)
+		$(INSTALL_PROG) $(PROG) $(BINDIR)
+		$(INSTALL_MAN) $(MAN) $(MANDIR)
+		if [ ! -f $(SCOREFILE) ]; then \
+			$(INSTALL_SCORE) /dev/null $(SCOREFILE) ; \
 		fi
+.PHONY: install
 
 clean:
-		rm -f ${OBJS}
+		$(RM) $(OBJS)
+.PHONY: clean
 
-veryclean:	clean
-		rm -f zombies
+clobber:	clean
+		$(RM) $(PROG)
+.PHONY: clobber
