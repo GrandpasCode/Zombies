@@ -53,6 +53,12 @@ install:	$(PROG)
 		fi
 .PHONY: install
 
+uninstall:
+		$(RM) $(BINDIR)/$(PROG)
+		$(RM) $(MANDIR)/$(MAN)
+		$(RM) $(SCOREFILE)
+.PHONY: uninstall
+
 clean:
 		$(RM) $(OBJS)
 .PHONY: clean
