@@ -38,12 +38,12 @@ HDRS		= zombies.h
 MAN		= zombies.6
 OBJS		= $(SRCS:.c=.o)
 
-all:		$(PROG)
+DEPENDS		= .depends
+
+all:		$(DEPENDS) $(PROG)
 .PHONY: all
 
 $(PROG):	$(OBJS)
-
-%.o:		%.c $(HDRS)
 
 install:	$(PROG)
 		$(INSTALL_PROG) $(PROG) $(BINDIR)
@@ -66,3 +66,14 @@ clean:
 clobber:	clean
 		$(RM) $(PROG)
 .PHONY: clobber
+
+depend:
+		$(RM) $(DEPENDS)
+		make $(DEPENDS)
+.PHONY: depend
+
+$(DEPENDS):
+		touch $(DEPENDS)
+		makedepend -Y -f $(DEPENDS) -- $(CFLAGS) $(CPPFLAGS) -- $(SRCS) >&/dev/null
+
+sinclude $(DEPENDS)
